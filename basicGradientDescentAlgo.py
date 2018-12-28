@@ -1,8 +1,8 @@
 from sympy import *
-import sys
 import numpy as np
 from matplotlib import pyplot as plt
 
+# Source URL: https://firsttimeprogrammer.blogspot.com/2014/09/gradient-descent-algorithm.html?m=1
 x = Symbol('x')
 
 # Function
@@ -21,10 +21,10 @@ def plotFun():
 theta = 84
 theta2 = 0
 alpha = .01
-iterations = 0
+iterations = 100
 check = 0
-precision = 1/10000
-plot = False
+precision = 1/1000000
+plot = True
 iterationsMax = 10000
 maxDivergence = 50
 
@@ -62,4 +62,4 @@ while True:
 if plot:
     print("Number of iterations:",iterations,"value of theta:",theta2,sep=" ")
     plt.plot(theta,N(y.subs(x,theta)).evalf(),marker='o',color='r')
-    plotFun
+    plotFun()
