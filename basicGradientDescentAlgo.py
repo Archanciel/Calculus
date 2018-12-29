@@ -7,10 +7,16 @@ x = Symbol('x')
 
 # Function
 y = x**2
+#y = x**4 + 4*x**3 + 3*x**2
 # First derivative with respect to x
 yprime = y.diff(x)
 # Second derivative with respect to x
 ypp = yprime.diff(x)
+
+# space = np.linspace(-5, 5, 100)
+# print(space)
+# print([N(y.subs(x, value)) for value in space])
+
 
 def plotFun():
     space = np.linspace(-5,5,100)
@@ -18,10 +24,10 @@ def plotFun():
     plt.plot(space, data)
     plt.show()
 
-theta = 84
+theta = 81
 theta2 = 0
 alpha = .01
-iterations = 100
+iterations = 0
 check = 0
 precision = 1/1000000
 plot = True
