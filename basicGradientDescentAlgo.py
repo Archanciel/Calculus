@@ -36,7 +36,9 @@ iterationsMax = 10000
 maxDivergence = 50
 
 while True:
-    theta2 = theta - alpha*N(yprime.subs(x,theta)).evalf()
+    slope = N(yprime.subs(x, theta))
+    descent_value = alpha * slope
+    theta2 = theta - descent_value
     iterations += 1
     
     # If we make too much iterations our program
@@ -63,13 +65,13 @@ while True:
     if abs(theta - theta2) < precision:
         break
     
-    print('theta: ', theta, '\ttheta2: ', theta2)
+    print('theta: ', theta, '\tslope', slope, '\tdescent_value', descent_value, '\ttheta2: ', theta2)
     if plot:
-        plt.plot(theta, N(y.subs(x, theta)).evalf(), marker='o', color='r')
+        plt.plot(theta, N(y.subs(x, theta)), marker='o', color='r')
     theta = theta2
 
 if plot:
-    plt.plot(theta,N(y.subs(x,theta)).evalf(),marker='o',color='r')
+    plt.plot(theta,N(y.subs(x,theta)),marker='o',color='r')
     plotFun(X_RANGE)
 
 print("Number of iterations:",iterations,"value of theta:",theta2,sep=" ")
