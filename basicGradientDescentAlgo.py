@@ -3,12 +3,14 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 # Source URL: https://firsttimeprogrammer.blogspot.com/2014/09/gradient-descent-algorithm.html?m=1
-X_RANGE = 10
+X_RANGE_RIGHT = 1
+X_RANGE_LEFT = -3.2
 x = Symbol('x')
 
 # Function
-y = x**2
-#y = x**4 + 4*x**3 + 3*x**2
+#y = x**2
+y = x**4 + 4*x**3 + 3*x**2
+pprint(y)
 # First derivative with respect to x
 yprime = y.diff(x)
 # Second derivative with respect to x
@@ -18,22 +20,26 @@ ypp = yprime.diff(x)
 # print(space)
 # print([N(y.subs(x, value)) for value in space])
 
-theta = X_RANGE
+theta = X_RANGE_RIGHT
+# theta = -X_RANGE_RIGHT
 
-def plotFun(x_range):
-    space = np.linspace(-x_range,x_range,100)
+def plotFun():
+    space = np.linspace(X_RANGE_LEFT,X_RANGE_RIGHT,100)
     data = np.array([N(y.subs(x,value)) for value in space])
     plt.plot(space, data)
     plt.show()
 
 theta2 = 0
-alpha = .1
+alpha = .01
 iterations = 0
 check = 0
 precision = 1/10000
 plot = True
 iterationsMax = 10000
 maxDivergence = 50
+
+# sizing the matplotlib window. This must be done before any plot operation
+plt.rcParams["figure.figsize"] = (6, 10)  # no effect !!ü
 
 while True:
     slope = N(yprime.subs(x, theta))
@@ -63,15 +69,18 @@ while True:
     # tolerance, we stop the program since theta has
     # converged to a value.
     if abs(theta - theta2) < precision:
+        print('precision {} reached'.format(precision))
         break
     
     print('theta: ', theta, '\tslope', slope, '\tdescent_value', descent_value, '\ttheta2: ', theta2)
+
     if plot:
         plt.plot(theta, N(y.subs(x, theta)), marker='o', color='r')
+
     theta = theta2
 
 if plot:
     plt.plot(theta,N(y.subs(x,theta)),marker='o',color='r')
-    plotFun(X_RANGE)
+    plotFun()
 
 print("Number of iterations:",iterations,"value of theta:",theta2,sep=" ")
