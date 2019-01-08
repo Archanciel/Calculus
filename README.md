@@ -3,5 +3,7 @@ Exploring calculus with Python
 
 ## Required libs
 
-* Sympy
+* sympy
+* seaborn
+* sklearn
 
