@@ -32,37 +32,53 @@ def step_gradient(b_current, m_current, points, learningRate, gradTimesTwo=True)
     new_m = m_current - (learningRate * m_gradient)
     return [new_b, new_m]
 
-def gradient_descent_runner(points, starting_b, starting_m, learning_rate, num_iterations, gradTimesTwo=True, doPrint = False):
+def gradient_descent_runner(points, starting_b, starting_m, learning_rate, precision, num_iterations, use_precision=False, gradTimesTwo=True, doPrint = False):
     b = starting_b
     m = starting_m
+    old_b = starting_b
+    old_m = starting_m
     for i in range(num_iterations):
         b, m = step_gradient(b, m, array(points), learning_rate, gradTimesTwo)
-#        if doPrint and i % 10 == 0:
+        if use_precision:
+            print(old_b, b, old_m, m)
+            if abs(old_b - b) < precision and abs(old_m - m) < precision:
+                print('Max precision ({}) reached after {} iterations'.format(precision, i + 1))
+                return b, m, i + 1
         if doPrint:
             print('{0:4} m {1:1.4f} b {2:1.4f}'.format(i + 1, m, b))
-    return [b, m]
+            print(old_b, b, old_m, m)
+        old_b = b
+        old_m = m
+
+    return [b, m, i + 1]
 
 def run():
     points = genfromtxt("data.csv", delimiter=",")
     initial_b = 0 # initial y-intercept guess
     initial_m = 0 # initial slope guess
-    gradTimesTwo = False
+    precision = 0.0001
+    use_precision = False
+    gradTimesTwo = True
 
-    if gradTimesTwo:
+    if use_precision:
         learning_rate = 0.0001
         num_iterations = 1000
     else:
-        # Pour obtenir les mêmes valeurs pour b et m,
-        # si le gradient n'est pas multiplié par 2, soit on double le learning rate
-        # soit on double le nombre d'itérations,
-        learning_rate = 0.0002
-        num_iterations = 1000
-#        num_iterations = 2000
-#        learning_rate = 0.0001
+        if gradTimesTwo:
+            learning_rate = 0.0001
+            num_iterations = 1000
+        else:
+            # Pour obtenir les mêmes valeurs pour b et m,
+            # si le gradient n'est pas multiplié par 2, soit on double le learning rate
+            # soit on double le nombre d'itérations,
+            learning_rate = 0.0002
+            num_iterations = 1000
+    #        num_iterations = 2000
+    #        learning_rate = 0.0001
 
     print("Starting gradient descent at b = {0}, m = {1}, error = {2}".format(initial_b, initial_m, compute_error_for_line_given_points(initial_b, initial_m, points)))
     print("Running...")
-    [b, m] = gradient_descent_runner(points, initial_b, initial_m, learning_rate, num_iterations, gradTimesTwo, doPrint=True)
+    [b, m, num_iterations] = gradient_descent_runner(points, initial_b, initial_m, learning_rate, precision, num_iterations, use_precision, gradTimesTwo, doPrint=True)
     print("After {0} iterations b = {1}, m = {2}, error = {3}".format(num_iterations, b, m, compute_error_for_line_given_points(b, m, points)))
 
 if __name__ == '__main__':
