@@ -32,9 +32,19 @@ def step_gradient(epoch, b_current, m_current, points, learningRate, gradTimesTw
         # means that our cost function is not defined as 1 / 2N (sum ...), but as 1 / N (sum ...), thus with a smaller slope
         b_gradient = b_gradient * 2 / N
         m_gradient = m_gradient * 2 / N
+        # Pour obtenir les mêmes valeurs pour b et m,
+        # si le gradient n'est pas multiplié par 2, soit on double le learning rate
+        # soit on double le nombre d'itérations. Ceci est dû au fait que la pente de
+        # la cost function est 2 fois moins forte si on ne divise pas la somme des erreurs
+        # au carré par 2 pour annuler le fois deux de la dérivation f' dans dx[f(g)], càd si
+        # la cost function J n'est PAS 1 / 2N * sum( (y - yHat) ** 2) )
     else:
-        b_gradient /= N
-        m_gradient /= N
+        b_gradient /= N # ici, J = 1 / 2N * sum( (y - yHat) ** 2) ). Sa dérivée partielle (gradient)
+                        # est donc 2 / 2N ... ==> 1/ N !
+
+        m_gradient /= N # ici, J = 1 / 2N * sum( (y - yHat) ** 2) ). Sa dérivée partielle (gradient)
+                        # est donc 2 / 2N ... ==> 1/ N !
+
     if doPrint:
         print(epoch + 1, ': ' + printGrad0[:-2] + '= {0:1.5f}'.format(b_gradient))
         print(epoch + 1, ': ' + printGrad1[:-2] + '= {0:1.5f}'.format(m_gradient))
@@ -83,7 +93,8 @@ def run():
             # si le gradient n'est pas multiplié par 2, soit on double le learning rate
             # soit on double le nombre d'itérations. Ceci est dû au fait que la pente de
             # la cost function est 2 fois moins forte si on ne divise pas la somme des erreurs
-            # au carré par 2 pour annuler le fois deux de la dérivation f' dans dx[f(g)]
+            # au carré par 2 pour annuler le fois deux de la dérivation f' dans dx[f(g)], càd si
+            # la cost function J n'est PAS 1 / 2N * sum( (y - yHat) ** 2) )
             learning_rate = 0.0002
             num_iterations = 1000
     #        num_iterations = 2000
