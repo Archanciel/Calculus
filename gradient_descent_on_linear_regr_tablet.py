@@ -23,6 +23,7 @@ def step_gradient(b_current, m_current, points, learningRate, gradTimesTwo=True)
         b_gradient += -(y - ((m_current * x) + b_current))
         m_gradient += -x * (y - ((m_current * x) + b_current))
     if gradTimesTwo:
+        # means that our cost function is not defined as 1 / 2N (sum ...), but as 1 / N (sum ...), thus with a smaller slope
         b_gradient = b_gradient * 2 / N
         m_gradient = m_gradient * 2 / N
     else:
@@ -70,7 +71,7 @@ def run():
         else:
             # Pour obtenir les mêmes valeurs pour b et m,
             # si le gradient n'est pas multiplié par 2, soit on double le learning rate
-            # soit on double le nombre d'itérations,
+            # soit on double le nombre d'itérations. Ceci est dû au fait que la pente de la cost function est 2 fois moins forte si on ne divise pas la somme des erreurs au carré par 2 pour annuler le fois deux de la dérivation f' dans dx f(g)
             learning_rate = 0.0002
             num_iterations = 1000
     #        num_iterations = 2000
