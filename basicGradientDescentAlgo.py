@@ -21,6 +21,7 @@ ypp = yprime.diff(x)
 # print([N(y.subs(x, value)) for value in space])
 
 theta = X_RANGE_RIGHT
+#theta = -1
 # theta = -X_RANGE_RIGHT
 
 def plotFun():
