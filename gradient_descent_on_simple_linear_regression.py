@@ -15,11 +15,12 @@ Max precision of 1e-07 reached at epoch 3858)
 y = 1.76187 + 0.64286x   J 12.99998
 '''
 
-data = np.genfromtxt("simpledata.csv", delimiter=",")
+data = np.genfromtxt("data.csv", delimiter=",")
 print(data)
 N = len(data)
 epochs = 5000
-alpha = 0.01
+alpha = 0.01 # value for simpledata.csv
+alpha = 0.0001 # value for data.csv
 precision = 0.0000001
 
 def costFunction(data, t0, t1):
@@ -31,7 +32,7 @@ def costFunction(data, t0, t1):
 
     return cost / len(data)
 
-def gradientDescent(t0, t1):
+def gradientDescent(t0, t1, doPrint=False):
     # y = t0 + t1x
 
     J = 0
@@ -49,12 +50,14 @@ def gradientDescent(t0, t1):
             y = data[j, 1]
             grad0 += t0 + t1 * x - y
             grad1 += x * (t0 + t1 * x - y)
-            printGrad0 += '({0:1.3f} + {1:1.3f} * {2:1.3f} - {3:1.1f}) + '.format(t0, t1, x, y)
-            printGrad1 += '({0:1.3f} * ({1:1.3f} + {2:1.3f} * {3:1.3f} - {4:1.1f})) + '.format(x, t0, t1, x, y, x)
+            if doPrint:
+                printGrad0 += '({0:1.3f} + {1:1.3f} * {2:1.3f} - {3:1.1f}) + '.format(t0, t1, x, y)
+                printGrad1 += '({0:1.3f} * ({1:1.3f} + {2:1.3f} * {3:1.3f} - {4:1.1f})) + '.format(x, t0, t1, x, y, x)
         grad0 /= N
         grad1 /= N
-        print(i + 1, ': ' + printGrad0[:-2] + '= {0:1.5f}'.format(grad0))
-        print(i + 1, ': ' + printGrad1[:-2] + '= {0:1.5f}'.format(grad1))
+        if doPrint:
+            print(i + 1, ': ' + printGrad0[:-2] + '= {0:1.5f}'.format(grad0))
+            print(i + 1, ': ' + printGrad1[:-2] + '= {0:1.5f}'.format(grad1))
         # grad0 *= 2/N
         # grad1 *= 2/N
         tNew0 = t0 - alpha * grad0

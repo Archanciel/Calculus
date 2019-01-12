@@ -13,7 +13,7 @@ def compute_error_for_line_given_points(b, m, points):
         totalError += (y - (m * x + b)) ** 2
     return totalError / float(len(points))
 
-def step_gradient(epoch, b_current, m_current, points, learningRate, gradTimesTwo=True):
+def step_gradient(epoch, b_current, m_current, points, learningRate, gradTimesTwo=True, doPrint=False):
     b_gradient = 0
     m_gradient = 0
     N = float(len(points))
@@ -25,8 +25,9 @@ def step_gradient(epoch, b_current, m_current, points, learningRate, gradTimesTw
         y = points[i, 1]
         b_gradient += -(y - ((m_current * x) + b_current))
         m_gradient += -x * (y - ((m_current * x) + b_current))
-        printGrad0 += '({0:1.3f} + {1:1.3f} * {2:1.3f} - {3:1.1f}) + '.format(b_current, m_current, x, y)
-        printGrad1 += '({0:1.3f} * ({1:1.3f} + {2:1.3f} * {3:1.3f} - {4:1.1f})) + '.format(x, b_current, m_current, x, y, x)
+        if doPrint:
+            printGrad0 += '({0:1.3f} + {1:1.3f} * {2:1.3f} - {3:1.1f}) + '.format(b_current, m_current, x, y)
+            printGrad1 += '({0:1.3f} * ({1:1.3f} + {2:1.3f} * {3:1.3f} - {4:1.1f})) + '.format(x, b_current, m_current, x, y, x)
     if gradTimesTwo:
         # means that our cost function is not defined as 1 / 2N (sum ...), but as 1 / N (sum ...), thus with a smaller slope
         b_gradient = b_gradient * 2 / N
@@ -34,8 +35,9 @@ def step_gradient(epoch, b_current, m_current, points, learningRate, gradTimesTw
     else:
         b_gradient /= N
         m_gradient /= N
-    print(epoch + 1, ': ' + printGrad0[:-2] + '= {0:1.5f}'.format(b_gradient))
-    print(epoch + 1, ': ' + printGrad1[:-2] + '= {0:1.5f}'.format(m_gradient))
+    if doPrint:
+        print(epoch + 1, ': ' + printGrad0[:-2] + '= {0:1.5f}'.format(b_gradient))
+        print(epoch + 1, ': ' + printGrad1[:-2] + '= {0:1.5f}'.format(m_gradient))
     new_b = b_current - (learningRate * b_gradient)
     new_m = m_current - (learningRate * m_gradient)
     return [new_b, new_m]
@@ -46,7 +48,7 @@ def gradient_descent_runner(points, starting_b, starting_m, learning_rate, preci
     old_b = starting_b
     old_m = starting_m
     for i in range(num_iterations):
-        b, m = step_gradient(epoch=i, b_current=b, m_current=m, points=array(points), learningRate=learning_rate, gradTimesTwo=gradTimesTwo)
+        b, m = step_gradient(epoch=i, b_current=b, m_current=m, points=array(points), learningRate=learning_rate, gradTimesTwo=gradTimesTwo, doPrint=doPrint)
         if use_precision:
             print(old_b, b, old_m, m)
             if abs(old_b - b) < precision and abs(old_m - m) < precision:
@@ -61,7 +63,7 @@ def gradient_descent_runner(points, starting_b, starting_m, learning_rate, preci
     return [b, m, i + 1]
 
 def run():
-    points = genfromtxt("simpledata.csv", delimiter=",")
+    points = genfromtxt("data.csv", delimiter=",")
     initial_b = 0 # initial y-intercept guess
     initial_m = 0 # initial slope guess
     precision = 0.0000001
@@ -69,7 +71,8 @@ def run():
     gradTimesTwo = False
 
     if use_precision:
-        learning_rate = 0.01
+        learning_rate = 0.01 #learning rate for simpledata.csv
+        learning_rate = 0.0001 # value for data.csv
         num_iterations = 5000
     else:
         if gradTimesTwo:
@@ -86,7 +89,7 @@ def run():
 
     print("Starting gradient descent at b = {0}, m = {1}, error = {2}".format(initial_b, initial_m, compute_error_for_line_given_points(initial_b, initial_m, points)))
     print("Running...")
-    [b, m, num_iterations] = gradient_descent_runner(points, initial_b, initial_m, learning_rate, precision, num_iterations, use_precision, gradTimesTwo, doPrint=True)
+    [b, m, num_iterations] = gradient_descent_runner(points, initial_b, initial_m, learning_rate, precision, num_iterations, use_precision, gradTimesTwo, doPrint=False)
     print("After {0} iterations b = {1}, m = {2}, error = {3}".format(num_iterations, b, m, compute_error_for_line_given_points(b, m, points)))
 
 if __name__ == '__main__':
