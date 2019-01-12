@@ -33,12 +33,12 @@ def gradientDescent(t0, t1):
     # y = t0 + t1x
 
     J = 0
-    grad0 = 0  # partial derivative t0 of cost function J
-    grad1 = 0  # partial derivative t1 of cost function J
 
     print("t0: {} t1: {}".format(t0, t1))
 
     for i in range(epochs):
+        grad0 = 0  # partial derivative t0 of cost function J
+        grad1 = 0  # partial derivative t1 of cost function J
         printGrad0 = ''
         printGrad1 = ''
 
@@ -49,17 +49,17 @@ def gradientDescent(t0, t1):
             grad1 += x * (t0 + t1 * x - y)
             printGrad0 += '({0:1.3f} + {1:1.3f} * {2:1.3f} - {3:1.1f}) + '.format(t0, t1, x, y)
             printGrad1 += '({0:1.3f} * ({1:1.3f} + {2:1.3f} * {3:1.3f} - {4:1.1f})) + '.format(x, t0, t1, x, y, x)
-        print(i + 1, ': ' + printGrad0[:-2] + '= {0:1.5f}'.format(grad0))
-        print(i + 1, ': ' + printGrad1[:-2] + '= {0:1.5f}'.format(grad1))
         grad0 /= N
         grad1 /= N
+        print(i + 1, ': ' + printGrad0[:-2] + '= {0:1.5f}'.format(grad0))
+        print(i + 1, ': ' + printGrad1[:-2] + '= {0:1.5f}'.format(grad1))
         # grad0 *= 2/N
         # grad1 *= 2/N
         tNew0 = t0 - alpha * grad0
         tNew1 = t1 - alpha * grad1
 
         if abs(t0 - tNew0) < precision and abs(t1 - tNew1) < precision:
-            print('Max precision of {} reached at epoch {})'.format(precision, i))
+            print('Max precision of {} reached at epoch {})'.format(precision, i + 1))
             break
 
         t0 = tNew0
