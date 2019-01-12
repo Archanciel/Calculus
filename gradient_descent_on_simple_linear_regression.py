@@ -25,9 +25,11 @@ precision = 0.0000001
 def costFunction(data, t0, t1):
     cost = 0
     for i in range(N):
-        cost += t0 + t1 * data[i, 0]
+        x = data[i, 0]
+        y = data[i, 1]
+        cost += ((t0 + t1 * x) - y) ** 2
 
-    return cost
+    return cost / len(data)
 
 def gradientDescent(t0, t1):
     # y = t0 + t1x
