@@ -15,12 +15,12 @@ Max precision of 1e-07 reached at epoch 3858)
 y = 1.76187 + 0.64286x   J 12.99998
 '''
 
-data = np.genfromtxt("data.csv", delimiter=",")
+data = np.genfromtxt("simpledata.csv", delimiter=",")
 print(data)
 N = len(data)
-epochs = 5000
+epochs = 500000
 alpha = 0.01 # value for simpledata.csv
-alpha = 0.0001 # value for data.csv
+#alpha = 0.0001 # value for data.csv
 precision = 0.0000001
 
 def costFunction(data, t0, t1):
