@@ -7,31 +7,39 @@ Y = np.array([2, 5, 6])
 # theta values
 W = np.zeros(2)
 #W = np.ones(2)
+
 print('X, Y, W')
 print(X, Y, W)
 
-
-# cost function
+# now coding gradient descent
+epoch = 5000
+precision = 0.0000001
+alpha = 0.01
 N = np.shape(W)[0]
-print('\nN')
-print(N)
 
-XWdot = np.dot(X, W)
-print('\nXWdot')
-print(XWdot)
+#points = np.genfromtxt("simpledata.csv", delimiter=",")
+#print(points)
 
-XWdotMinusY = XWdot - Y
-print('\nXWdotMinusY')
-print(XWdotMinusY)
+for i in range(epoch):
+    XdotW = np.dot(X, W)
+    XdotWMinusY = XdotW - Y
+    G = np.dot(XdotWMinusY, X) / N
+#    print('\nold W')
+#    print(W)
+    newW = W - alpha * G
 
-XWdotMinusYsquared = XWdotMinusY ** 2
-print('\nXWdotMinusYsquared')
-print(XWdotMinusYsquared)
+    diff = abs(newW - W)
+#    diff = newW - W
+#    print(diff)
+    # print(np.all(np.less(diff,precision)))
+    if np.all(np.less(diff,precision)):
+        print('Max precision of {} reached after {} iteration'.format(precision, i + 1))
+        print('Final W')
+        print(newW)
+        XdotWMinusYsquared = XdotWMinusY ** 2
+        J = XdotWMinusYsquared.sum() / N
+        print('\nJ')
+        print(J)
+        break
 
-J = XWdotMinusYsquared.sum() / (2 * N)
-print('\nJ')
-print(J)
-
-G = np.dot(XWdotMinusY, X) / N
-print('Gradients')
-print(G)
+    W = newW
