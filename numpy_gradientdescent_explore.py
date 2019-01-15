@@ -12,7 +12,7 @@ print(X, Y, W)
 
 
 # cost function
-N = np.shape(W)[0]
+N = np.shape(X)[0]
 print('\nN')
 print(N)
 
