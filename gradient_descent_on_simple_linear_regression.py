@@ -55,7 +55,7 @@ def gradientDescent(t0, t1, doPrint=False):
                 printGrad1 += '({0:1.3f} * ({1:1.3f} + {2:1.3f} * {3:1.3f} - {4:1.1f})) + '.format(x, t0, t1, x, y, x)
         grad0 /= N
         grad1 /= N
-        if doPrint:
+        if doPrint and i < 5:
             print(i + 1, ': ' + printGrad0[:-2] + '= {0:1.5f}'.format(grad0))
             print(i + 1, ': ' + printGrad1[:-2] + '= {0:1.5f}'.format(grad1))
         # grad0 *= 2/N
@@ -76,8 +76,8 @@ def gradientDescent(t0, t1, doPrint=False):
     #    print("grad0 {0:1.10f} grad1 {1:1.10f} t0 {2:1.7f} t1 {3:1.7f} J {4:3.5f}\n".format(grad0, grad1, t0, t1, J))
     return t0, t1, J
 
-t0, t1, J = gradientDescent(t0=0, t1=0)
-print('y = {0:1.7f} + {1:1.7f}x   J {2:3.5f}\n'.format(t0, t1, J))
+t0, t1, J = gradientDescent(t0=0, t1=0, doPrint=True)
+print('y = {} + {}x   J {}\n'.format(t0, t1, J))
 
 # t0, t1, J = gradientDescent(t0=10, t1=10)
 # print('y = {0:1.7f} + {1:1.7f}x   J {2:3.5f}\n'.format(t0, t1, J))
