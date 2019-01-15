@@ -15,7 +15,7 @@ print(X, Y, W)
 epoch = 5000
 precision = 0.0000001
 alpha = 0.01
-N = np.shape(W)[0]
+N = np.shape(X)[0]
 
 #points = np.genfromtxt("simpledata.csv", delimiter=",")
 #print(points)
@@ -24,6 +24,14 @@ for i in range(epoch):
     XdotW = np.dot(X, W)
     XdotWMinusY = XdotW - Y
     G = np.dot(XdotWMinusY, X) / N
+    if i < 5:
+        print(i + 1,' ',G)
+        # print('XdotW')
+        # print(XdotW)
+        # print('XdotWMinusY')
+        # print(XdotWMinusY)
+        # print('X')
+        # print(X)
 #    print('\nold W')
 #    print(W)
     newW = W - alpha * G
