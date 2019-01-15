@@ -10,12 +10,34 @@ W = np.zeros(2)
 print('X, Y, W')
 print(X, Y, W)
 
-
-# cost function
 N = np.shape(X)[0]
 print('\nN')
 print(N)
 
+data = np.genfromtxt("simpledata.csv", delimiter=",")
+print('\ndata')
+print(data)
+
+oneColumn = np.ones((N, 1))
+print('\noneColumn')
+print(oneColumn)
+
+#data[:,0:1] = oneColumn
+data = np.insert(data,0,1,axis=1)
+print('\ndata mod')
+print(data)
+
+#Y = data[:,-1:]
+print('\ndataY')
+print(Y)
+
+lstColIdx = np.shape(data)[1] - 1
+data = np.delete(data,lstColIdx,axis=1)
+print('\ndata mod2')
+print(data)
+
+
+# cost function
 XWdot = np.dot(X, W)
 print('\nXWdot')
 print(XWdot)
