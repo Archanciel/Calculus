@@ -12,7 +12,10 @@ def gradientDescent(X, y, theta, alpha, iters):
     for i in range(iters):
         # you don't need the extra loop - this can be vectorize
         # making it much faster and simpler
-        theta = theta - (alpha/len(X)) * np.sum((X @ theta.T - y) * X, axis=0)
+#        theta = theta - (alpha/len(X)) * np.sum((X @ theta.T - y) * X, axis=0) Using dot product instead !
+        theta = theta - (alpha/len(X)) * np.sum((X.dot(theta.T) - y) * X, axis=0)
+        #        print(X @ theta.T)
+        #        print(X.dot(theta.T))
         cost = computeCost(X, y, theta)
         # if i % 10 == 0: # just look at cost every ten loops for debugging
         #     print(cost)
@@ -23,25 +26,31 @@ alpha = 0.0001
 iters = 1000
 
 # here x is columns
-X = my_data[:, 0].reshape(-1,1) # -1 tells numpy to figure out the dimension by itself
+#X = my_data[:, 0].reshape(-1,1) # -1 tells numpy to figure out the dimension by itself
+X = my_data[:, 0:1] # better and simpler !
+#print(X)
 ones = np.ones([X.shape[0], 1])
 X = np.concatenate([ones, X],1)
+#print(X)
 #X = np.hstack([ones, X]) # hstack Stack arrays in sequence horizontally (column wise)
 
 
 # theta is a row vector
 theta = np.array([[1.0, 1.0]])
+print(theta)
+print(theta.T)
+
 
 # y is a columns vector
 y = my_data[:, 1].reshape(-1,1)
+#print(y)
 
-g, cost = gradientDescent(X, y, theta, alpha, iters)  
+g, cost = gradientDescent(X, y, theta, alpha, iters)
 print(g, cost)
 
 plt.scatter(my_data[:, 0].reshape(-1,1), y)
 axes = plt.gca()
-x_vals = np.array(axes.get_xlim()) 
+x_vals = np.array(axes.get_xlim())
 y_vals = g[0][0] + g[0][1]* x_vals #the line equation
 plt.plot(x_vals, y_vals, '--')
-
-X @ g.T
+plt.show()
