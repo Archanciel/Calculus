@@ -22,16 +22,23 @@ N = np.shape(X)[0]
 
 for i in range(epoch):
     XdotW = np.dot(X, W)
+
+    # experimenting alternative to dot product:
+    # Comment from lr2.py: @ means matrix multiplication of arrays. If we want to use * for
+    # multiplication we will have to convert all arrays to matrices
+    XmW = X @ W
     XdotWMinusY = XdotW - Y
     G = np.dot(XdotWMinusY, X) / N
     if i < 5:
         print(i + 1,' ',G)
-        # print('XdotW')
-        # print(XdotW)
-        # print('XdotWMinusY')
-        # print(XdotWMinusY)
-        # print('X')
-        # print(X)
+        print('XdotW')
+        print(XdotW)
+        print('XmW')
+        print(XmW)
+        print('XdotWMinusY')
+        print(XdotWMinusY)
+        print('X')
+        print(X)
 #    print('\nold W')
 #    print(W)
     newW = W - alpha * G
