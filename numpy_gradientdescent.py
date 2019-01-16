@@ -1,44 +1,56 @@
 import numpy as np
 
-# data
-X = np.array([[1, 2], [1, 3], [1, 7]])
-Y = np.array([2, 5, 6])
+# loading data
+data = np.genfromtxt("simpledata.csv", delimiter=",")
+print('data')
+print(data)
 
-# theta values
+# extracting X from data
+X = data[:,:-1]
+print('\nX extracted from data')
+print(X)
+
+# adding a column of 1's to the X matrix
+X = np.insert(X,0,1,axis=1)
+print('\nX after adding col of ones')
+print(X)
+
+# extracting Y from data
+Y = data[:,-1:]
+print('\nY extracted from data')
+print(Y)
+Y = Y.flatten() # algo not working if not flattening !
+print('\nY flattened')
+print(Y)
+
+# starting theta values
 W = np.zeros(2)
-#W = np.ones(2)
 
-print('X, Y, W')
-print(X, Y, W)
+print('\nW')
+print(W)
 
 # now coding gradient descent
+
 epoch = 5000
 precision = 0.0000001
 alpha = 0.01
 N = np.shape(X)[0]
 
-#points = np.genfromtxt("simpledata.csv", delimiter=",")
-#print(points)
-
 for i in range(epoch):
     XdotW = np.dot(X, W)
-
-    # experimenting alternative to dot product:
-    # Comment from lr2.py: @ means matrix multiplication of arrays. If we want to use * for
-    # multiplication we will have to convert all arrays to matrices
-    XmW = X @ W
     XdotWMinusY = XdotW - Y
     G = np.dot(XdotWMinusY, X) / N
     if i < 5:
-        print(i + 1,' ',G)
-        print('XdotW')
-        print(XdotW)
-        print('XmW')
-        print(XmW)
-        print('XdotWMinusY')
-        print(XdotWMinusY)
+        print('iter ', i + 1)
         print('X')
         print(X)
+        print('W')
+        print(W)
+        print('XdotW')
+        print(XdotW)
+        print('XdotWMinusY')
+        print(XdotWMinusY)
+        print(G)
 #    print('\nold W')
 #    print(W)
     newW = W - alpha * G
